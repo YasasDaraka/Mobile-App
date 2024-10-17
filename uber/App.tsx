@@ -1,6 +1,6 @@
 import React from "react";
-import MapComponent from "./app/screens/MapComponent";
 import MainView from "./app/screens/common/MainView";
+import 'react-native-get-random-values';
 
 export default function App() {
   return (

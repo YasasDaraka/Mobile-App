@@ -9,6 +9,7 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="index"  options={{ headerShown: false }} />
       <Stack.Screen name="screens/pages/MainView"  options={{ headerShown: false }}/>
+      <Stack.Screen name="screens/pages/Pickup"  options={{ headerShown: false }}/>
     </Stack>
     </PaperProvider>
     </SafeAreaProvider>
