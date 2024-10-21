@@ -10,14 +10,14 @@ export default function Rides() {
     <>
       <ScrollView className="h-full w-full">
         <View className="flex justify-center items-center h-full w-full">
-          <View className="flex justify-center items-center h-[20vw] w-full bg-slate-600">
+          <View className="flex justify-center items-center h-[20vw] w-full">
             <Searchbar
               className="w-11/12"
               placeholder="Enter Pickup Point"
               placeholderTextColor="black"
               onChangeText={setSearchQuery}
               value={searchQuery}
-              onFocus={() => router.push('./screens/pages/Pickup')}
+              onFocus={() => router.push('../pages/Pickup')}
             />
           </View>
           <View className="h-[40vw] w-full bg-slate-200"></View>

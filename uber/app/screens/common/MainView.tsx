@@ -14,7 +14,7 @@ export default function MainView() {
       <SafeAreaView style={{ flex: 1 }}>
         <View className="flex w-full h-full">
           <StatusBar barStyle="light-content" backgroundColor="#222222" />
-          <View className="flex flex-1 bg-slate-500">
+          <View className="flex flex-1 ">
             <Tab.Navigator
               screenOptions={{
                 headerShown: false,

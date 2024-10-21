@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectOrigin, selectDestination, setTravelTimeInfo } from '@/slices/navSlice';
 import MapViewDirections from 'react-native-maps-directions';
 import { Icon } from 'react-native-elements';
-import { GOOGLE_MAP_KEY } from '@env';
+import { GOOGLE_MAP_KEY } from "@env";
 
 
 
 
 const MapViewCard = () => {
-  const origin:any = useSelector(selectOrigin);
-  const destination:any = useSelector(selectDestination);
+  const origin = useSelector(selectOrigin);
+  const destination = useSelector(selectDestination);
   const mapRef = useRef<MapView | null>(null);
   const dispatch = useDispatch();
   
@@ -32,7 +32,7 @@ const MapViewCard = () => {
     if (!origin?.location || !destination?.location) return;
 
     const getTravelTime = async () => {
-      fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAP_KEY}`)
+      fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=AIzaSyCP8V2_aSwo5DxWeogjhyv-w5rRc5L2UuE`)
         .then(response => response.json())
         .then(data => {
           dispatch(setTravelTimeInfo(data.rows[0].elements[0]));
@@ -46,9 +46,11 @@ const MapViewCard = () => {
   }, [origin, destination, GOOGLE_MAP_KEY]);
 
   return (
+   
     <MapView
       ref={mapRef}
-      style={{ flex: 1, height: 400 }}
+      key={origin?.location?.lat + destination?.location?.lat}
+      style={{ width:"100%",height:"100%"}}
       initialRegion={{
         latitude: origin?.location?.lat || 37.78825, 
         longitude: origin?.location?.lng || -122.4324, 
@@ -58,8 +60,51 @@ const MapViewCard = () => {
       showsUserLocation={true} 
       followsUserLocation={true} 
     >
-    
+      {origin?.location && (
+         <Marker
+         coordinate={{
+           latitude: origin.location.lat,
+           longitude: origin.location.lng,
+         }}
+         title='Current Location'
+         description={origin.description}
+         identifier='origin'
+       >
+        
+           <Icon
+             name='accessibility'
+             type='ionicon'
+             color='black'
+             size={40}
+           />
+          
+        
+       </Marker>
+      )}
+
+      {destination?.location && (
+        <Marker
+          coordinate={{
+            latitude: destination.location.lat,
+            longitude: destination.location.lng,
+          }}
+          title='Destination'
+          description={destination.description}
+          identifier='destination'
+        />
+      )}
+
+     {origin && destination && (
+        <MapViewDirections
+          origin={origin.description}
+          destination={destination.description}
+          apikey={GOOGLE_MAP_KEY}
+          strokeWidth={3}
+          strokeColor='black'
+        />
+      )} 
     </MapView>
+   
   );
 };
 

@@ -10,9 +10,9 @@ export default function Home() {
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="light-content" backgroundColor="#222222" />
-        <View className="w-full h-full bg-slate-500">
+        <View className="w-full h-full ">
           <Tab.Navigator>
-            <Tab.Screen name="Rides" component={Rides} />
+            <Tab.Screen name="Rides" component={Rides}/>
             <Tab.Screen name="Eats" component={Eats} />
           </Tab.Navigator>
         </View>
