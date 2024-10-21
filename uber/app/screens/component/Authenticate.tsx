@@ -87,7 +87,7 @@ export default function Authenticate() {
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
           <View className="flex-1 justify-center items-center p-4 mt-32">
-          <Text className="text-center font-bold text-black text-lg mb-4">
+          <Text className="text-center font-bold text-black text-xl mb-4">
                     Sign up with Email
                   </Text>
             <TextInput
@@ -136,7 +136,7 @@ export default function Authenticate() {
                 router.navigate("../component/Confirm");
               }}
             >
-              <Text style={{ color: 'white', fontSize: 16 }}>Login</Text>
+              <Text style={{ color: 'white', fontSize: 16 }}>SignUp</Text>
             </TouchableOpacity>
 
           </View>
