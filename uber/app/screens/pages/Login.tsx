@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -15,23 +15,28 @@ import {
 import { Headline, IconButton, TextInput } from "react-native-paper";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
+import { useDispatch } from "react-redux";
+import { setLogIn } from "@/slices/navSlice";
 
 
 export default function Login() {
   const [text, setText] = React.useState("");
   const [isEnable, setIsEnable] = useState(false);
   const router = useRouter();
-
+  const dispatch = useDispatch(); 
   
   const handleGoogle = async ()=> {
-    const provider = await new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    // const provider = await new GoogleAuthProvider();
+    // return signInWithPopup(auth, provider);
   }
+  useEffect(()=>{
+    dispatch(setLogIn(false));
+  },[])
 
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar barStyle="light-content" backgroundColor="#222222" />
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
         <KeyboardAvoidingView
           {...(Platform.OS === "ios" && { behavior: "padding" })}
@@ -117,7 +122,7 @@ export default function Login() {
 
                 <TouchableOpacity
                   className={`flex-row items-center justify-center w-[93.5%] h-[6vh] bg-[#DDDDDD] rounded-lg`}
-                  onPress={() => {router.navigate("../component/Authenticate")}}
+                  onPress={() => {dispatch(setLogIn(false));router.navigate("../component/Authenticate")}}
                 >
                   <IconButton icon="email" size={30} />
                   <Text className="text-center font-bold text-black text-lg mr-3">
@@ -128,7 +133,7 @@ export default function Login() {
               <View className="w-full h-2/6 flex justify-start items-center">
                 <TouchableOpacity
                   className={`flex-row justify-center items-center w-[93.5%] h-[6vh] `}
-                  onPress={() => {}}
+                  onPress={() => {dispatch(setLogIn(true));router.navigate("../component/Authenticate"); }}
                 >
                   <IconButton icon="magnify" size={30} className="pl-3 pt-1"/>
                   <Text className="text-center font-bold text-black text-lg mr-5">

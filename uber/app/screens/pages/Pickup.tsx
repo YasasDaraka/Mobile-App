@@ -14,13 +14,15 @@ import MapViewCard from "../component/MapViewCard";
 import { Headline } from "react-native-paper";
 import { useRouter } from "expo-router";
 import RideOptions from "../component/RideOptions";
-import { selectDestination, selectIsRideOptions, selectOrigin, setDestination, setIsRideOptions, setOrigin } from "@/slices/navSlice";
+import { selectDestination, selectIsRideOptions, selectOrigin, selectPaymentView, setDestination, setIsRideOptions, setOrigin, setPaymentView } from "@/slices/navSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from 'react-native-elements';
+import Payment from "../component/Payment";
 
 export default function Pickup() {
   const dispatch = useDispatch();  
   const isRideOptions = useSelector(selectIsRideOptions);
+  const isPayementView = useSelector(selectPaymentView);
   const origin = useSelector(selectOrigin);
   const destination = useSelector(selectDestination);
   const [isEnable,setIsEnable] = useState(false)
@@ -36,7 +38,7 @@ export default function Pickup() {
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar barStyle="light-content" backgroundColor="#222222" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
         <View className="w-full h-full ">
           <View className="h-[55%] w-full flex justify-center items-center z-[-1] ">
@@ -46,7 +48,7 @@ export default function Pickup() {
           <View className="h-[45%] flex justify-start items-center mt-2 z-2">
             {isRideOptions ? (
               <RideOptions />
-            ) : (
+            ) : isPayementView ? (<Payment/>):(
               <View className="h-full w-full flex justify-start items-center rounded-3xl">
 
             <View className="w-full flex-row justify-center items-start">
@@ -71,7 +73,8 @@ export default function Pickup() {
                 <TouchableOpacity
                   className={`flex-row items-center justify-center w-[90%] h-[6vh] ${!isEnable && 'opacity-50'} absolute bottom-[4vh] bg-black rounded-lg`}
                   onPress={() => {
-                    dispatch(setIsRideOptions(true))
+                    dispatch(setPaymentView(false));
+                    dispatch(setIsRideOptions(true));
                   }}
                   disabled={!isEnable}
                 >

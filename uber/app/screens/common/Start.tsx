@@ -6,7 +6,7 @@ const login = require("../../../assets/entry.png");
 export default function Start() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       <View className="w-full h-full flex justify-start items-center">
         <View className="w-full h-5/6 flex justify-center items-center mt-4">

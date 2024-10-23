@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -17,10 +18,18 @@ export default function Confirm() {
   const [last, setLast] = useState("");
   const router = useRouter();
 
+  const SaveUser = async ()=>{
+    try {
+      await AsyncStorage.setItem('userName', `${first}${last}`); 
+      router.navigate("../common/MainView");
+    } catch (error) {
+      console.log('Error saving email:', error);
+    }
+  }
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -28,6 +37,7 @@ export default function Confirm() {
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
           <ScrollView
+            className="bg-white"
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
           >
@@ -59,7 +69,6 @@ export default function Confirm() {
                   value={last}
                   onChangeText={(text) => setLast(text)}
                   placeholder="Last Name"
-                  secureTextEntry
                   underlineColor="transparent"
                   activeUnderlineColor="transparent"
                   style={{
@@ -75,7 +84,7 @@ export default function Confirm() {
               <TouchableOpacity
                 className="w-[30vw] h-[6vh] bg-black rounded-xl flex justify-center items-center"
                 onPress={() => {
-                  // signUp(email, password)
+                   SaveUser();
                   // router.navigate("../common/MainView");
                   router.navigate("../common/MainView");
                 }}

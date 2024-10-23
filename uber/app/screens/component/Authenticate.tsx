@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, TouchableOpacity, View, Text, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebaseConfig';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectLogIn, setLogIn } from '@/slices/navSlice';
 
 export default function Authenticate() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
+
+    const isLogIn = useSelector(selectLogIn);
+    const dispatch = useDispatch();
 
     const validateEmail = (email:any) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,14 +57,18 @@ export default function Authenticate() {
 
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
           const user = userCredential.user;
-          
+          try {
+            await AsyncStorage.setItem('userEmail', email); 
+          } catch (error) {
+            console.log('Error saving email:', error);
+          }
           Alert.alert(
             "Success", 
             "Register Complete", 
             [
               {
                 text: "OK", 
-                onPress: () =>{setEmail(""); setPassword("");router.navigate("../pages/Login")}, 
+                onPress: () =>{setEmail(""); setPassword("");router.navigate("../component/Confirm");}, 
               },
             ],
             { cancelable: true }
@@ -66,7 +76,7 @@ export default function Authenticate() {
         } catch (error) {
             Alert.alert(
                 "Error", 
-                "Error signing up", 
+                "Error Signing up", 
                 [
                   {
                     text: "OK", 
@@ -77,18 +87,55 @@ export default function Authenticate() {
               );
         }
       };
+
+      const signIn = async (email:any, password:any) => {
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          Alert.alert(
+            "Success", 
+            "User logged in successfully", 
+            [
+              {
+                text: "OK", 
+                onPress: () =>{setEmail(""); setPassword("");router.navigate("../common/MainView");}, 
+              },
+            ],
+            { cancelable: true }
+          );
+        
+        } catch (error) {
+          Alert.alert(
+            "Error", 
+            "Error Signing In", 
+            [
+              {
+                text: "OK", 
+                onPress: () =>{setEmail(""); setPassword("");}, 
+              },
+            ],
+            { cancelable: true }
+          );
+        }
+      }
+
+      useEffect(() => {
+        return () => {
+          dispatch(setLogIn(false)); 
+        };
+      }, [dispatch]);
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
+      className='bg-white'
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         keyboardVerticalOffset={100} 
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-          <View className="flex-1 justify-center items-center p-4 mt-32">
+        <ScrollView className="bg-white" contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+          <View className="flex-1 justify-center items-center p-4 mt-32 bg-white">
           <Text className="text-center font-bold text-black text-xl mb-4">
-                    Sign up with Email
+                    {isLogIn?"Sign In with Email": "Sign up with Email"}
                   </Text>
             <TextInput
               className="rounded-lg"
@@ -131,12 +178,13 @@ export default function Authenticate() {
                 borderRadius: 8,
               }}
               onPress={() => {
-                // signUp(email, password)
+                {isLogIn?signIn(email, password): signUp(email, password)}
+                 
                 // router.navigate("../common/MainView");
-                router.navigate("../component/Confirm");
+                //router.navigate("../component/Confirm");
               }}
             >
-              <Text style={{ color: 'white', fontSize: 16 }}>SignUp</Text>
+              <Text style={{ color: 'white', fontSize: 16 }}>{isLogIn?"SignIn": "SignUp"}</Text>
             </TouchableOpacity>
 
           </View>

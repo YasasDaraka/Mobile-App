@@ -13,7 +13,9 @@ const initialState = {
   destination : null,
   travelTimeInfo : null,
   isRideOptions : false,
-  isInitialValue : ""
+  isInitialValue : "",
+  isPaymentView: false,
+  isLogIn: false
 
 }
 
@@ -35,11 +37,17 @@ export const navSlice = createSlice({
    },
    setInitialValue: (state, action) => {
     state.isInitialValue = action.payload
+   },
+   setPaymentView: (state, action) => {
+    state.isPaymentView = action.payload
+   },
+   setLogIn: (state, action) => {
+    state.isLogIn = action.payload
    }
 }})
 
 // Action creators are generated for each case reducer function
-export const { setOrigin, setDestination, setTravelTimeInfo, setIsRideOptions, setInitialValue } = navSlice.actions
+export const { setOrigin, setDestination, setTravelTimeInfo, setIsRideOptions, setInitialValue, setPaymentView, setLogIn } = navSlice.actions
 
 //selectors
 export const selectOrigin = (state: { nav: { origin: any } }) => state.nav.origin
@@ -47,5 +55,7 @@ export const selectDestination = (state: { nav: { destination: any } }) => state
 export const selectTravelTimeInfo = (state: { nav: { travelTimeInfo: any } }) => state.nav.travelTimeInfo
 export const selectIsRideOptions = (state: { nav: { isRideOptions: any } }) => state.nav.isRideOptions
 export const selectInitialValue = (state: { nav: { isInitialValue: any } }) => state.nav.isInitialValue
+export const selectPaymentView = (state: { nav: { isPaymentView: any } }) => state.nav.isPaymentView
+export const selectLogIn = (state: { nav: { isLogIn: any } }) => state.nav.isLogIn
 
 export default navSlice.reducer

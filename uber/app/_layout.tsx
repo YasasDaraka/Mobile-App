@@ -15,10 +15,13 @@ export default function RootLayout() {
       <Stack.Screen name="screens/common/Start"  options={{ headerShown: false }}/>
       <Stack.Screen name="screens/pages/Pickup"  options={{ headerShown: false }}/>
       <Stack.Screen name="screens/pages/Login"  options={{ headerShown: false }}/>
+      <Stack.Screen name="screens/pages/Account"  options={{ headerShown: false }}/>
+      <Stack.Screen name="screens/pages/Activity"  options={{ headerShown: false }}/>
+      <Stack.Screen name="screens/pages/Home"  options={{ headerShown: false }}/>
+      <Stack.Screen name="screens/pages/Services"  options={{ headerShown: false }}/>
       <Stack.Screen name="screens/component/Authenticate"  options={{ headerShown: false }}/>
       <Stack.Screen name="screens/component/Confirm"  options={{ headerShown: false }}/>
-      
-      
+      <Stack.Screen name="screens/component/Payment"  options={{ headerShown: false }}/>
     </Stack>
     </PaperProvider>
     </Provider>
