@@ -8,11 +8,13 @@ const cors = require('cors');
 var usersRouter = require('./routes/Users');
 var driverRouter = require('./routes/Drivers');
 var rideRouter = require('./routes/Rides');
+var refreshRouter = require('./routes/RefreshToken');
 
 var app = express();
 
 app.use(cors());
 const dbConnection = require('./db/DBConnection');
+
 dbConnection();
 
 // view engine setup
@@ -29,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/user', usersRouter);
 app.use('/api/v1/driver', driverRouter);
 app.use('/api/v1/ride', rideRouter);
+app.use('/api/v1/refreshToken',refreshRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

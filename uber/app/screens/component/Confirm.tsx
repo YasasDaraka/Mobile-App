@@ -10,8 +10,11 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { Headline, TextInput } from "react-native-paper";
+import axios from 'axios';
+import  {checkTokenExpired}  from "../common/RefreshToken";
 
 export default function Confirm() {
   const [first, setFirst] = useState("");
@@ -19,7 +22,59 @@ export default function Confirm() {
   const router = useRouter();
 
   const SaveUser = async ()=>{
+    
     try {
+      checkTokenExpired();
+      const storedToken = await AsyncStorage.getItem('token');
+      console.log(storedToken);
+      const email = await AsyncStorage.getItem("userEmail");
+      console.log(email);
+      const response = await axios.put('http://10.0.2.2:4000/api/v1/user', {
+        email:email,
+        password:"",
+        name:`${first}${last}`,
+      },
+       {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          'Content-Type': 'application/json',
+      },
+      }
+    );
+
+    if (response.status === 204) {
+      Alert.alert(
+        "Success",
+        "Register Complete",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setFirst("");
+              setLast("");
+            },
+          },
+        ],
+        { cancelable: true }
+      );
+    } else {
+      Alert.alert(
+        "Error",
+        "Error Update name",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setFirst("");
+              setLast("");
+            },
+          },
+        ],
+        { cancelable: true }
+      );
+      return;
+    }
+
       await AsyncStorage.setItem('userName', `${first}${last}`); 
       router.navigate("../common/MainView");
     } catch (error) {
@@ -86,7 +141,6 @@ export default function Confirm() {
                 onPress={() => {
                    SaveUser();
                   // router.navigate("../common/MainView");
-                  router.navigate("../common/MainView");
                 }}
               >
                 <Text className="text-white font-bold text-base">Next</Text>

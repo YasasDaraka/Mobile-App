@@ -36,7 +36,7 @@ export default function Entry() {
     try {
       const token = await AsyncStorage.getItem("userEmail");
       if (token) {
-        router.push("./screens/common/MainView");
+        router.push("./screens/common/Start");
       } else {
         router.push("./screens/common/Start");
       }

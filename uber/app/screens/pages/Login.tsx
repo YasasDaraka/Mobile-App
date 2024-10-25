@@ -63,6 +63,7 @@ export default function Login() {
                     placeholder="Country"
                     underlineColor="transparent"
                     activeUnderlineColor="transparent"
+                    disabled={true}
                     style={{
                       width: 100,
                       height: 45,
@@ -81,6 +82,7 @@ export default function Login() {
                     placeholder="Mobile "
                     underlineColor="transparent"
                     activeUnderlineColor="transparent"
+                    disabled={true}
                     style={{
                       width: 250,
                       height: 45,

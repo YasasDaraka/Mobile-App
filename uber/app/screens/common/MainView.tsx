@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Image, View, StatusBar, TouchableOpacity, Modal } from "react-native";
+import React, { useCallback, useState } from "react";
+import { Image, View, StatusBar, TouchableOpacity, Modal, BackHandler } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../pages/Home";
@@ -7,8 +7,23 @@ import Services from "../pages/Services";
 import Activity from "../pages/Activity";
 import Account from "../pages/Account";
 import { IconButton } from "react-native-paper";
+import { useFocusEffect, useRouter } from "expo-router";
+import App from "@/App";
 export default function MainView() {
   const Tab = createBottomTabNavigator();
+  const router = useRouter();
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        router.dismissAll();
+        return true;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [router])
+  );
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>

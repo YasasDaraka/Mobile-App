@@ -11,10 +11,11 @@ const userModel = mongoose.Schema(
         },
         "password":{
             type:String,
-            required:true,
+            required:false,
         },
         "name":{
-            type:String
+            type:String,
+            required:false,
         }
     },
     {versionKey:false}
