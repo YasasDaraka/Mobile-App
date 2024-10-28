@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { getServices } from "../details/ServiceDetails";
+import { IconButton } from "react-native-paper";
 const car = require("../../../assets/car2.png");
 const food = require("../../../assets/food.png");
 const data: any = getServices();
@@ -18,12 +19,22 @@ export default function Services() {
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
         <View className="w-full h-full bg-white">
-          <View className="w-full h-1/6 flex justify-around items-start">
+
+        <View className="w-full h-1/6 flex justify-around items-start">
+            <View className="w-full h-auto flex-row justify-start items-center">
+            <IconButton iconColor="black" icon={"headset"} size={40} className="ml-4"/>
+            <Text className="text-4xl font-bold">Services</Text>
+            </View>
+            <Text className="text-xl font-semibold ml-8">
+            Go anywhere, Get anything
+            </Text>
+          </View>
+          {/* <View className="w-full h-1/6 flex justify-around items-start">
             <Text className="text-4xl font-bold ml-8">Services</Text>
             <Text className="text-xl font-semibold ml-8">
               Go anywhere, Get anything
             </Text>
-          </View>
+          </View> */}
 
           <View className="w-full h-1/5 flex-row justify-center items-center">
           
