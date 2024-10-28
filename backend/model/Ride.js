@@ -6,7 +6,6 @@ const rideModel = mongoose.Schema(
         "email":{
             type:String,
             required:true,
-            unique:true,
             index:true
         },
         "origin":{
@@ -17,6 +16,18 @@ const rideModel = mongoose.Schema(
             type:String,
             required:true,
         },
+        "fare":{
+            type:Number,
+            required:true
+        },
+        "vehicle":{
+            type:String,
+            required:true
+        },
+        "card":{
+            type:String,
+            required:true
+        }
     },
     {versionKey:false}
 )

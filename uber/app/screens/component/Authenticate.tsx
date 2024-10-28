@@ -14,7 +14,7 @@ import { TextInput } from "react-native-paper";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { selectLogIn, setLogIn } from "@/slices/navSlice";
+import { selectDriver, selectLogIn, selectVehicle, setLogIn } from "@/slices/navSlice";
 import axios from "axios";
 
 import { signInWithEmailAndPassword , signInWithCustomToken} from "firebase/auth";
@@ -23,9 +23,11 @@ import { auth } from "@/firebaseConfig";
 export default function Authenticate() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [vehicleNum, setVehicleNum] = useState("");
   const router = useRouter();
 
   const isLogIn = useSelector(selectLogIn);
+  const isDriver = useSelector(selectDriver);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +48,7 @@ export default function Authenticate() {
               onPress: () => {
                 setEmail("");
                 setPassword("");
+                {isDriver&& setVehicleNum("")}
               },
             },
           ],
@@ -64,6 +67,7 @@ export default function Authenticate() {
               onPress: () => {
                 setEmail("");
                 setPassword("");
+                {isDriver&& setVehicleNum("")}
               },
             },
           ],
@@ -71,15 +75,38 @@ export default function Authenticate() {
         );
         return;
       }
+      
+        if (isDriver && vehicleNum.length <= 4) {
+          Alert.alert(
+            "Alert",
+            "Invalid Password",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  setEmail("");
+                  setPassword("");
+                  {isDriver&& setVehicleNum("")}
+                },
+              },
+            ],
+            { cancelable: true }
+          );
+
+      }
+    
 
       // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // const user = userCredential.user;
       setLoading(true);
+      let path = ""
+      
       const response = await axios.post(
-        "http://10.0.2.2:4000/api/v1/user/signup",
+        `http://10.0.2.2:4000/api/v1/${isDriver? "driver":"user"}/signup`,
         {
           email: email,
           password: password,
+          ...(isDriver && { vehicle: `${vehicleNum}` }),
           name: "",
         },
         {
@@ -90,7 +117,7 @@ export default function Authenticate() {
       );
 
       if (response.status === 201) {
-        console.error(password);
+        
         const { customToken } = response.data;
         console.log("custonm token ", customToken);
         await AsyncStorage.setItem("customToken", customToken);
@@ -114,6 +141,7 @@ export default function Authenticate() {
               onPress: () => {
                 setEmail("");
                 setPassword("");
+                {isDriver&& setVehicleNum("")}
                 router.navigate("../component/Confirm");
               },
             },
@@ -131,6 +159,7 @@ export default function Authenticate() {
               onPress: () => {
                 setEmail("");
                 setPassword("");
+                {isDriver&& setVehicleNum("")}
               },
             },
           ],
@@ -170,6 +199,7 @@ export default function Authenticate() {
             onPress: () => {
               setEmail("");
               setPassword("");
+              {isDriver&& setVehicleNum("")}
             },
           },
         ],
@@ -218,7 +248,7 @@ export default function Authenticate() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://10.0.2.2:4000/api/v1/user/signin",
+        `http://10.0.2.2:4000/api/v1/${isDriver? "driver":"user"}/signin`,
         {
           email: email,
           password: password,
@@ -231,7 +261,7 @@ export default function Authenticate() {
         }
       );
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         
         const { customToken } = response.data;
         await AsyncStorage.setItem("customToken", customToken);
@@ -239,6 +269,7 @@ export default function Authenticate() {
           const userCredential = await signInWithCustomToken(auth,customToken);
           const idToken = await userCredential.user.getIdToken();
           await AsyncStorage.setItem("token", idToken);
+          await AsyncStorage.setItem("userEmail", email);
         } catch (error) {
           console.error("Error signing in:", error);
         }
@@ -260,6 +291,7 @@ export default function Authenticate() {
           ],
           { cancelable: true }
         );
+        return;
       }
       else if(response.status === 404){
         Alert.alert(
@@ -276,12 +308,16 @@ export default function Authenticate() {
           ],
           { cancelable: true }
         );
+        return;
       }
 
       setLoading(false);
+      const token = await AsyncStorage.getItem("token");
+      const usermail = await AsyncStorage.getItem("userEmail");
+          console.log(usermail);
       Alert.alert(
         "Success",
-        "User logged in successfully",
+        `${isDriver? "Driver":"User"} logged in successfully`,
         [
           {
             text: "OK",
@@ -413,6 +449,21 @@ export default function Authenticate() {
                 backgroundColor: "#DDDDDD",
               }}
             />
+
+            {isDriver && !isLogIn && <TextInput
+              className="rounded-lg mt-5"
+              mode="flat"
+              value={vehicleNum}
+              onChangeText={(text) => setVehicleNum(text)}
+              placeholder="Vehcle number"
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
+              style={{
+                width: 350,
+                height: 45,
+                backgroundColor: "#DDDDDD",
+              }}
+            />}
 
             <TouchableOpacity
               style={{

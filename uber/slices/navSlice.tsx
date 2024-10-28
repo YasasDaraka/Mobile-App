@@ -15,7 +15,11 @@ const initialState = {
   isRideOptions : false,
   isInitialValue : "",
   isPaymentView: false,
-  isLogIn: false
+  isLogIn: false,
+  payment: null,
+  vehicle:null,
+  isVish:false,
+  isDriver:false
 
 }
 
@@ -43,11 +47,24 @@ export const navSlice = createSlice({
    },
    setLogIn: (state, action) => {
     state.isLogIn = action.payload
+   },
+   setPayment: (state, action) => {
+    state.payment = action.payload
+   },
+   setVehicle: (state, action) => {
+    state.vehicle = action.payload
+   },
+   setVish: (state, action) => {
+    state.isVish = action.payload
+   },
+   setDriver: (state, action) => {
+    state.isDriver = action.payload
    }
 }})
 
 // Action creators are generated for each case reducer function
-export const { setOrigin, setDestination, setTravelTimeInfo, setIsRideOptions, setInitialValue, setPaymentView, setLogIn } = navSlice.actions
+export const { setOrigin, setDestination, setTravelTimeInfo, setIsRideOptions, setInitialValue, 
+  setDriver, setPaymentView, setLogIn, setPayment, setVehicle, setVish } = navSlice.actions
 
 //selectors
 export const selectOrigin = (state: { nav: { origin: any } }) => state.nav.origin
@@ -57,5 +74,8 @@ export const selectIsRideOptions = (state: { nav: { isRideOptions: any } }) => s
 export const selectInitialValue = (state: { nav: { isInitialValue: any } }) => state.nav.isInitialValue
 export const selectPaymentView = (state: { nav: { isPaymentView: any } }) => state.nav.isPaymentView
 export const selectLogIn = (state: { nav: { isLogIn: any } }) => state.nav.isLogIn
-
+export const selectPayment = (state: { nav: { payment: any } }) => state.nav.payment
+export const selectVehicle = (state: { nav: { vehicle: any } }) => state.nav.vehicle
+export const selectVish = (state: { nav: { isVish: any } }) => state.nav.isVish
+export const selectDriver = (state: { nav: { isDriver: any } }) => state.nav.isDriver
 export default navSlice.reducer

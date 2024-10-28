@@ -15,12 +15,14 @@ import {
 import { Headline, TextInput } from "react-native-paper";
 import axios from 'axios';
 import  {checkTokenExpired}  from "../common/RefreshToken";
+import { useSelector } from "react-redux";
+import { selectDriver } from "@/slices/navSlice";
 
 export default function Confirm() {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const router = useRouter();
-
+  const isDriver = useSelector(selectDriver);
   const SaveUser = async ()=>{
     
     try {
@@ -29,7 +31,7 @@ export default function Confirm() {
       console.log(storedToken);
       const email = await AsyncStorage.getItem("userEmail");
       console.log(email);
-      const response = await axios.put('http://10.0.2.2:4000/api/v1/user', {
+      const response = await axios.put(`http://10.0.2.2:4000/api/v1/${isDriver? "driver":"user"}`, {
         email:email,
         password:"",
         name:`${first}${last}`,

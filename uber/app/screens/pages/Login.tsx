@@ -15,8 +15,8 @@ import {
 import { Headline, IconButton, TextInput } from "react-native-paper";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
-import { useDispatch } from "react-redux";
-import { setLogIn } from "@/slices/navSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDriver, setLogIn } from "@/slices/navSlice";
 
 
 export default function Login() {
@@ -24,6 +24,7 @@ export default function Login() {
   const [isEnable, setIsEnable] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch(); 
+  const isDriver  = useSelector(selectDriver);
   
   const handleGoogle = async ()=> {
     // const provider = await new GoogleAuthProvider();
@@ -48,7 +49,13 @@ export default function Login() {
           >
             <View className="w-full h-2/3 flex justify-center items-center mt-16">
               <View className="w-full h-2/6 flex justify-center items-center">
-                <View className="w-full h-1/3 flex-row justify-start items-end">
+
+                {isDriver && (<View className="w-full h-[4vh] flex-row justify-center items-center">
+                  <Headline className="font-extrabold text-xl">
+                    Driver Register
+                  </Headline>
+                </View>)}
+                <View className={`w-full ${isDriver?"h-1/4":"h-1/3"} flex-row justify-start items-end`}>
                   <Headline className="font-extrabold text-xl mb-1 ml-4">
                     Enter your mobile number
                   </Headline>

@@ -17,9 +17,9 @@ const driverModel = mongoose.Schema(
             type:String,
             required:false,
         },
-        "vehical":{
+        "vehicle":{
             type:String,
-            required:true,
+            required:false,
         }
     },
     {versionKey:false}
