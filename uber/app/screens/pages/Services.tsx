@@ -9,11 +9,14 @@ import {
 } from "react-native";
 import { getServices } from "../details/ServiceDetails";
 import { IconButton } from "react-native-paper";
+import { useSelector } from "react-redux";
+import { selectDriver } from "@/slices/navSlice";
 const car = require("../../../assets/car2.png");
 const food = require("../../../assets/food.png");
-const data: any = getServices();
 
 export default function Services() {
+  const data: any = getServices();
+  const isDriver = useSelector(selectDriver);
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
@@ -26,7 +29,8 @@ export default function Services() {
             <Text className="text-4xl font-bold">Services</Text>
             </View>
             <Text className="text-xl font-semibold ml-8">
-            Go anywhere, Get anything
+              {isDriver?"Drive Carefully":"Go anywhere, Get anything"}
+           
             </Text>
           </View>
           {/* <View className="w-full h-1/6 flex justify-around items-start">

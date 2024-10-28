@@ -474,11 +474,11 @@ export default function Authenticate() {
                 borderRadius: 8,
               }}
               onPress={() => {
-                // {
-                //   isLogIn ? signIn(email, password) : signUp(email, password);
-                // }
+                {
+                  isLogIn ? signIn(email, password) : signUp(email, password);
+                }
 
-                 router.navigate("../common/MainView");
+                // router.navigate("../common/MainView");
                 //router.navigate("../component/Confirm");
               }}
             >

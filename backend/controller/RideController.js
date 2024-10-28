@@ -1,5 +1,7 @@
 let ride = require('../model/Ride');
 let user = require('../model/User');
+let {format} = require('date-fns');
+
 const rideController = {
     getRideByUsername: async (req, res) => {
         try {
@@ -25,6 +27,10 @@ const rideController = {
             if (exist == null) {
                 return res.status(404).json({ message: 'User not found' });
             }
+            const date = new Date();
+            const formattedDate = format(date, 'yyyy-MM-dd HH:mm:ss');
+            data.date = formattedDate;
+            console.log(data)
             await ride.create(data);
             res.status(201).json({ message: 'Ride created successfully' });
         } catch (err) {

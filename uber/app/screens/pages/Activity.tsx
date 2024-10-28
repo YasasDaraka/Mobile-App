@@ -71,9 +71,24 @@ export default function Activity() {
                 >
                   <View className="w-full h-full flex-row justify-center items-center rounded-xl bg-[#F3F3F3] ">
                     <View className="w-4/6 h-full justify-center items-start ">
-                    <Text className="font-semibold mb-2 ml-4"><Text className="text-blue-600">From{"\n"}</Text>{item.origin}</Text>
-                    <Text className="font-semibold mb-2 ml-4"><Text className="text-blue-600">To{"\n"}</Text>{item.destination}</Text>
+
+                    <View className="w-full h-2/6 flex-row justify-start items-center "> 
+                      <IconButton iconColor="black" icon={"calendar"} size={15} className="bg-slate-200"/>
+                    <Text className="font-semibold"><Text className="text-blue-600 text-base">Date  </Text>{item.date}</Text>
                     </View>
+
+                    <View className="w-full h-2/6 flex-row justify-start items-center "> 
+                      <IconButton iconColor="black" icon={"map-marker-outline"} size={15} className="bg-slate-200"/>
+                    <Text className="font-semibold"><Text className="text-blue-600 text-base">From  </Text>{item.origin}</Text>
+                    </View>
+
+                    <View className="w-full h-2/6 flex-row justify-start items-center "> 
+                      <IconButton iconColor="black" icon={"map-marker-radius"} size={15} className="bg-slate-200"/>
+                    <Text className="font-semibold"><Text className="text-blue-600 text-base">To  </Text>{item.destination}</Text>
+                    </View>
+                    
+                    </View>
+
                     <View className="w-2/6 h-full justify-center items-center ">
                     <Image
                       source={item.vehicle == "Car"? car :item.vehicle == "Three Wheel"? tuk:item.vehicle == "MotorBike"?moto:""}
