@@ -1,6 +1,7 @@
 let user = require('../model/User');
 let admin = require('../db/Firebase');
 const bcrypt = require('bcrypt');
+const ride = require("../model/Ride");
 const userController = {
     getUserById: async (req, res) => {
         try {
@@ -100,6 +101,9 @@ const userController = {
         }
     },
     removeUser: async function (req, res) {
+
+        const session = await user.startSession();
+        session.startTransaction();
         try {
             const email = req.query.email;
             try {
@@ -108,8 +112,12 @@ const userController = {
 
             } catch (error) {
                 if (error.code === 'auth/user-not-found') {
+                    await session.abortTransaction();
+                    await session.endSession();
                     return res.status(404).json({ error: 'User not found in firebase' });
                 }
+                await session.abortTransaction();
+                await session.endSession();
                 res.status(500).json({ error: 'Error deleting user in firebase' });
                 return;
             }
@@ -117,8 +125,19 @@ const userController = {
             const result = await user.deleteOne({email: email});
 
             if (result.deletedCount == 0) {
+                await session.abortTransaction();
+                await session.endSession();
                 return res.status(404).json({error: 'User not found'});
             }
+            const rideResult = await ride.deleteOne({email: email});
+
+            if (rideResult.deletedCount == 0) {
+                await session.abortTransaction();
+                await session.endSession();
+                return res.status(404).json({error: 'Ride not found'});
+            }
+            await session.commitTransaction();
+            session.endSession();
             res.status(204).json({message: 'User deleted success'});
 
         } catch (error) {

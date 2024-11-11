@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectOrigin, selectDestination, setTravelTimeInfo } from '@/slices/navSlice';
 import MapViewDirections from 'react-native-maps-directions';
 import { Icon } from 'react-native-elements';
-import { GOOGLE_MAP_KEY } from "@env";
+
 
 
 
@@ -43,7 +43,7 @@ const MapViewCard = () => {
       getTravelTime();
     }, 500); 
     
-  }, [origin, destination, GOOGLE_MAP_KEY]);
+  }, [origin, destination, "AIzaSyCP8V2_aSwo5DxWeogjhyv-w5rRc5L2UuE"]);
 
   return (
    
@@ -98,7 +98,7 @@ const MapViewCard = () => {
         <MapViewDirections
           origin={origin.description}
           destination={destination.description}
-          apikey={GOOGLE_MAP_KEY}
+          apikey={"AIzaSyCP8V2_aSwo5DxWeogjhyv-w5rRc5L2UuE"}
           strokeWidth={3}
           strokeColor='black'
         />

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { GOOGLE_MAP_KEY } from "@env";
 import { View } from "react-native";
 import {
   setOrigin,
@@ -53,7 +52,7 @@ export default function Search({ type }: Props) {
         fetchDetails={true}
         minLength={2}
         query={{
-          key: GOOGLE_MAP_KEY,
+          key: "AIzaSyCP8V2_aSwo5DxWeogjhyv-w5rRc5L2UuE",
           language: "en",
         }}
         nearbyPlacesAPI="GooglePlacesSearch"
